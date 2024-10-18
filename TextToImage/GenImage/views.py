@@ -1,10 +1,10 @@
 from urllib.parse import urlparse
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import openai
 from django.shortcuts import render, redirect
 from django.conf import settings
 import requests
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 
 # importing my openAI api key from settings
 openai.api_key = settings.OPENAI_API_KEY
@@ -20,22 +20,27 @@ def index(request):
 
 #---------------------------view function for generating the image------------------------
 
-@csrf_exempt
+@csrf_protect  # Enable CSRF protection
 def generate_image(request):
     if request.method == "POST":
         prompt = request.POST.get('my_description')  # for getting the description from the form (frontend)
         try:
-            # for generateing 4 images using the openAI api 
+            # for generateing images using the openAI api 
             response = openai.Image.create(
                 prompt=prompt,
-                n=4,  # image count we want 
+                n=4,  # Image count
                 size="1024x1024"
             )
-            images = [data['url'] for data in response['data']]  # for collecting the image urls
-            return render(request, 'display_images.html', {'images': images, 'prompt': prompt})
+            images = [data['url'] for data in response['data']]  # for collecting image urls
+            return JsonResponse({"images": images, "prompt": prompt}, status=201)  # Return images as JSON
+        except openai.error.OpenAIError as e:
+            return JsonResponse({"error": f"OpenAI API error: {str(e)}"}, status=500)  # Handle openAI api errors
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({"error": f"Network error: {str(e)}"}, status=503)  # Handle network issues
         except Exception as e:
-            return render(request, 'index.html', {'error': str(e)})
-    return render(request, 'index.html')
+            return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)  # Handle unexpected errors
+    else:
+        return JsonResponse({"error": "Invalid request method."}, status=405)  # Handle invalid methods
 
 
 
