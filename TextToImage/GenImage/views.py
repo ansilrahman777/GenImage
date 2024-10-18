@@ -31,16 +31,16 @@ def generate_image(request):
                 n=4,  # Image count
                 size="1024x1024"
             )
-            images = [data['url'] for data in response['data']]  # for collecting image urls
-            return JsonResponse({"images": images, "prompt": prompt}, status=201)  # Return images as JSON
+            images = [data['url'] for data in response['data']]  # Collecting image URLs
+            return render(request, 'display_images.html', {'images': images, 'prompt': prompt})  # Render template with images
         except openai.error.OpenAIError as e:
-            return JsonResponse({"error": f"OpenAI API error: {str(e)}"}, status=500)  # Handle openAI api errors
+            return render(request, 'index.html', {'error': f"OpenAI API error: {str(e)}"})  # Handle OpenAI API errors
         except requests.exceptions.RequestException as e:
-            return JsonResponse({"error": f"Network error: {str(e)}"}, status=503)  # Handle network issues
+            return render(request, 'index.html', {'error': f"Network error: {str(e)}"})  # Handle network issues
         except Exception as e:
-            return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)  # Handle unexpected errors
+            return render(request, 'index.html', {'error': f"Unexpected error: {str(e)}"})  # Handle unexpected errors
     else:
-        return JsonResponse({"error": "Invalid request method."}, status=405)  # Handle invalid methods
+        return render(request, 'index.html', {'error': "Invalid request method."})  # Handle invalid methods
 
 
 
