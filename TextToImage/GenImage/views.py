@@ -4,13 +4,23 @@ import openai
 from django.shortcuts import render, redirect
 from django.conf import settings
 import requests
+from django.views.decorators.csrf import csrf_exempt
 
-# my openAI api key from settings
+# importing my openAI api key from settings
 openai.api_key = settings.OPENAI_API_KEY
+
+
+
+#---------------------------view function for home page ---------------------------------
 
 def index(request):
     return render(request, 'index.html')  #input form
 
+
+
+#---------------------------view function for generating the image------------------------
+
+@csrf_exempt
 def generate_image(request):
     if request.method == "POST":
         prompt = request.POST.get('my_description')  # for getting the description from the form (frontend)
@@ -27,6 +37,9 @@ def generate_image(request):
             return render(request, 'index.html', {'error': str(e)})
     return render(request, 'index.html')
 
+
+
+#----------------------------view function for downloading the image-----------------------------
 
 def download_image(request, image_url):
     # fetch the image from the url
