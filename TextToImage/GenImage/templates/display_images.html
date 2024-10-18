@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Generated Images{% endblock title %}
+{% block body %}
+<section class="bg-transparent py-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2
+        class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-900 to-blue-400"
+      >
+        Generated Images
+      </h2>
+      <p class="mt-4 text-md text-gray-400">
+        Results for: <span class="text-lg text-white">{{ prompt }}</span>
+      </p>
+    </div>
+
+    <!-- Adjusted grid layout to 4 columns on large screens -->
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {% for image in images %}
+      <div
+        class="bg-gray-800 rounded-lg shadow-lg p-6 transform hover:scale-105 transition duration-300"
+      >
+        <img
+          src="{{ image }}"
+          alt="Generated Image"
+          class="w-full h-auto rounded-md mb-4"
+        />
+        <div class="flex justify-between items-center">
+          <a
+            href="{{ image }}"
+            target="_blank"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            >View</a
+          >
+          <a
+            href="{% url 'download_image' image %}"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >
+            Download
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if images|length == 0 %}
+    <!-- No images found message -->
+    <div class="text-center text-white mt-8">
+      <h2 class="text-2xl font-semibold">
+        No images generated for "{{ prompt }}"
+      </h2>
+      <p class="mt-2">Please try again with a different description.</p>
+      <a
+        href="/"
+        class="mt-5 relative inline-flex text-slate-300 items-center justify-center leading-normal no-underline pb-1 text-black font-sans font-bold text-md hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-500 transition group"
+      >
+        Generate New Image
+        <svg
+          class="icon icon-tabler icon-tabler-arrow-up-right"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24V24H0z" fill="none"></path>
+          <path d="M17 7L7 17"></path>
+          <path d="M8 7h9v9"></path>
+        </svg>
+        <span
+          class="absolute bottom-0 left-0 w-full h-0.5 bg-white origin-bottom-right transform transition duration-200 ease-out scale-x-0 group-hover:scale-x-100 group-hover:origin-bottom-left"
+        ></span>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock body %}

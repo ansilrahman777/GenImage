@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{%endblock title %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://kit.fontawesome.com/9a253e3427.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="bg-gray-900">
+    <header>
+      <nav class="flex items-center justify-center p-3">
+        <div>
+          <h1 class="text-4xl text-white font-bold tracking-tight font-sans sm:text-6xl">
+            GenImage
+          </h1>
+        </div>
+      </nav>
+    </header>
+
+    {% block body %} {% endblock body %}
+
+    <div
+      class="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6"
+      aria-hidden="true"
+    >
+      <div
+        class="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
+        style="
+          clip-path: polygon(
+            74.1% 44.1%,
+            100% 61.6%,
+            97.5% 26.9%,
+            85.5% 0.1%,
+            80.7% 2%,
+            72.5% 32.5%,
+            60.2% 62.4%,
+            52.4% 68.1%,
+            47.5% 58.3%,
+            45.2% 34.5%,
+            27.5% 76.7%,
+            0.1% 64.9%,
+            17.9% 100%,
+            27.6% 76.8%,
+            76.1% 97.7%,
+            74.1% 44.1%
+          );
+        "
+      ></div>
+    </div>
+
+    <footer class="fixed bottom-0 z-20 w-full shadow bg-gray-900">
+      <div
+        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-center"
+      >
+        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+          >© 2024
+          <a href="https://ansilrahman777.vercel.app/" class="hover:underline"
+            >ansilrahman77™</a
+          >. All Rights Reserved.
+        </span>
+      </div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
+      defer
+    ></script>
+  </body>
+</html>
